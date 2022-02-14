@@ -1,0 +1,118 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>tinymce.init({selector:'textarea'});</script>
+  <style>
+	.business_block{
+		display:none;
+	}
+	.preview_block{
+		display:none;
+	}
+  </style>
+  <script>
+  let abc = [];
+	$(document).ready(function(){
+		$(".sel_input").change(function(){
+			if($(".sel_input").val() !== "Стандарт"){
+				$(".business_block").css("display", "block");
+				$(".preview_block").css("display", "none");
+				if($(".sel_input").val() !== "Бізнес"){
+					$(".preview_block").css("display", "block");
+				}
+			}
+			else{
+				$(".business_block").css("display", "none");
+			}
+		});
+	});
+	function getAllInput(){
+		let arr = $("[info]");
+		let keys;
+		let obj = {};
+		for(let i=0; i<arr.length;i++){
+			keys = arr[i].getAttribute("info");
+			obj[keys] = arr[i].value;
+		}
+		return obj;
+	}
+  </script>
+</head>
+<body>
+	<div class="container">
+		<div class="label_main"></div>
+		<div class="sel_block">
+			<div class="sel_label">Виберіть вид підписки</div>
+			<select class="sel_input" info="subscribe">
+				<option class="standart" selected="selected">Стандарт</option>
+				<option class="business">Бізнес</option>
+				<option class="business+">Бізнес+</option>
+			</select>
+		</div>
+		<div class="username_block">
+			<div class="username_label">Ім'я користувача</div>
+			<input class="username_input" info="username" placeholder="Введіть ім'я"/>
+		</div>
+		<div class="password_block">
+			<div class="password_label">Пароль</div>
+			<input class="password_input" info="password" placeholder="Введіть пароль"/>
+		</div>
+		<div class="phone_block">
+			<div class="phone_label">Номер телефону</div>
+			<input class="phone_input" info="phonenum" placeholder="Введіть номер"/>
+		</div>
+		<div class="mail_block">
+			<div class="mail_label">Поштова адреса</div>
+			<input class="mail_input" info="email" placeholder="Введіть поштову адресу"/>
+		</div>
+		<div class="photo_block">
+			<div class="photo_label">Фото профілю</div>
+			<!-- <input class="username_input" placeholder=""/> -->
+		</div>
+		<div class="business_block">
+			<div class="social">
+				<div class="facebook">
+					<div class="fb_label">Facebook</div>
+					<input class="fb_input" info="facebook" placeholder=""/>
+				</div>
+				<div class="instagram">
+					<div class="instagram_label">Instagram</div>
+					<input class="instagram_input" info="instagram" placeholder=""/>
+				</div>
+				<div class="twitter">
+					<div class="twitter_label">Twitter</div>
+					<input class="twitter_input" info="twitter"  placeholder=""/>
+				</div>
+			</div>
+			<div class="preview_block">
+				<div class="preview_label">Відео-шапка сторінки</div>
+				<!-- <input class="preview_input" placeholder=""/> -->
+			</div>
+		</div>
+		<button class="submit">Готово</button>
+	</div>
+	
+	<script>
+	$(".submit").click(function(){
+		sendData = getAllInput();
+		console.log(sendData);
+		$.ajax({
+			url:"desk_upload.php",
+			method:"POST",
+			data:sendData,
+			success: function(data) {
+				console.log(data);
+			}
+		})
+	});
+	</script>
+</body>
+</html>
